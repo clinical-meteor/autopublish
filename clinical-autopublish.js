@@ -37,7 +37,7 @@
         Meteor.subscribe("QuestionnaireResponses");
       }
       if(Package['clinical:hl7-resource-risk-assessment']){
-        Meteor.subscribe("QuestionnaireResponses");
+        Meteor.subscribe("RiskAssessments");
       }
     });
   }
