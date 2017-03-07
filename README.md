@@ -2,7 +2,7 @@
 
 Autopublish FHIR resources to authenticated users.  This package is more restrictive than the default `autopublish` package and requires that a user be logged in.  However, it's less restrictive than having custom publish/subscribe functions, and assumes that all users of the application should have access to any/all records in the database.  
 
-THIS PACKAGE DOES NOT INSURE HIPAA COMPLIANCE.  It's better than the default `autopublish` package, however.  
+THIS PACKAGE DOES NOT INSURE HIPAA COMPLIANCE.  It provides a better HIPAA security position than the default `autopublish` package, however.  
 
 ===============================
 #### Installation  
