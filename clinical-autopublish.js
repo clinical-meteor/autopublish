@@ -39,12 +39,27 @@
       if(Package['clinical:hl7-resource-risk-assessment']){
         Meteor.subscribe("RiskAssessments");
       }
+      if(Package['clinical:hl7-resource-audit-event']){
+        Meteor.subscribe("AuditEvents");
+      }
     });
   }
 
 
 
+
+
   if (Meteor.isServer){
+    if(Package['clinical:hl7-resource-audit-event']){
+      Meteor.publish("AuditEvents", function (argument){
+        if (this.userId) {
+          return AuditEvents.find();
+        } else {
+          return [];
+        }
+      });
+    }
+
     Meteor.startup(function() {
       if(Package['clinical:hl7-resource-risk-assessment']){
         Meteor.publish("RiskAssessments", function (query){
