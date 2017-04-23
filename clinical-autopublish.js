@@ -42,6 +42,10 @@
       if(Package['clinical:hl7-resource-audit-event']){
         Meteor.subscribe("AuditEvents");
       }
+      if(Package['clinical:hl7-resource-practitioner-role']){
+        Meteor.subscribe("PractitionerRoles");
+      }
+
     });
   }
 
@@ -50,17 +54,28 @@
 
 
   if (Meteor.isServer){
-    if(Package['clinical:hl7-resource-audit-event']){
-      Meteor.publish("AuditEvents", function (argument){
-        if (this.userId) {
-          return AuditEvents.find();
-        } else {
-          return [];
-        }
-      });
-    }
+
 
     Meteor.startup(function() {
+      if(Package['clinical:hl7-resource-audit-event']){
+        Meteor.publish("AuditEvents", function (argument){
+          if (this.userId) {
+            return AuditEvents.find();
+          } else {
+            return [];
+          }
+        });
+      }
+      if(Package['clinical:hl7-resource-practitioner-role']){
+        Meteor.publish("PractitionerRoles", function (argument){
+          if (this.userId) {
+            return PractitionerRoles.find();
+          } else {
+            return [];
+          }
+        });
+      }
+
       if(Package['clinical:hl7-resource-risk-assessment']){
         Meteor.publish("RiskAssessments", function (query){
 
