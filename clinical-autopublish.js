@@ -3,6 +3,9 @@
 
   if (Meteor.isClient){
     Meteor.startup(function() {
+      if(Package['clinical:hl7-resource-device']){
+        Meteor.subscribe("Devices");
+      }
       if(Package['clinical:hl7-resource-diagnostic-report']){
         Meteor.subscribe("DiagnosticReports");
       }
@@ -57,7 +60,15 @@
 
 
     Meteor.startup(function() {
-      if(Package['clinical:hl7-resource-audit-event']){
+      if(Package['clinical:hl7-resource-device']){
+        Meteor.publish("AuditEvents", function (argument){
+          if (this.userId) {
+            return Devices.find();
+          } else {
+            return [];
+          }
+        });
+      }      if(Package['clinical:hl7-resource-audit-event']){
         Meteor.publish("AuditEvents", function (argument){
           if (this.userId) {
             return AuditEvents.find();
