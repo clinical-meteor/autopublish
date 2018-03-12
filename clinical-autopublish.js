@@ -11,6 +11,9 @@ if (Meteor.isClient){
     if(Package['clinical:hl7-resource-audit-event']){
       Meteor.subscribe("AuditEvents");
     }
+    if(Package['clinical:hl7-resource-condition']){
+      Meteor.subscribe("Conditions");
+    }
     if(Package['clinical:hl7-resource-device']){
       Meteor.subscribe("Devices");
     }
@@ -89,9 +92,17 @@ if (Meteor.isServer){
         }
       });
     }
-
+    if(Package['clinical:hl7-resource-condition']){
+      Meteor.publish("Conditions", function (argument){
+        if (this.userId) {
+          return Conditions.find();
+        } else {
+          return [];
+        }
+      });
+    }         
     if(Package['clinical:hl7-resource-device']){
-      Meteor.publish("AuditEvents", function (argument){
+      Meteor.publish("Devices", function (argument){
         if (this.userId) {
           return Devices.find();
         } else {
@@ -129,8 +140,6 @@ if (Meteor.isServer){
         }
       });
     }
-
-
 
 
     if(Package['clinical:hl7-resource-healthcare-service']){
