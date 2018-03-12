@@ -192,7 +192,7 @@ if (Meteor.isServer){
       });
     }
 
-    if(Package['clinical:hl7-resource-observations']){
+    if(Package['clinical:hl7-resource-observation']){
       Meteor.publish('Observations', function (argument){
         if (this.userId) {
           return Observations.find();
