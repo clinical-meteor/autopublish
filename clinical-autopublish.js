@@ -1,6 +1,4 @@
 
-console.log('There is an AllergyIntolerances package')
-
 if (Meteor.isClient){
   console.log('Autosubscribing to publications.')
   Meteor.startup(function() {
@@ -14,6 +12,12 @@ if (Meteor.isClient){
     if(Package['clinical:hl7-resource-condition']){
       Meteor.subscribe("Conditions");
     }
+    if(Package['clinical:hl7-resource-consent']){
+      Meteor.subscribe("Consents");
+    }
+    if(Package['clinical:hl7-resource-contract']){
+      Meteor.subscribe("Contracts");
+    }        
     if(Package['clinical:hl7-resource-device']){
       Meteor.subscribe("Devices");
     }
@@ -101,6 +105,24 @@ if (Meteor.isServer){
         }
       });
     }         
+    if(Package['clinical:hl7-resource-consent']){
+      Meteor.publish("Consents", function (argument){
+        if (this.userId) {
+          return Consents.find();
+        } else {
+          return [];
+        }
+      });
+    }     
+    if(Package['clinical:hl7-resource-contract']){
+      Meteor.publish("Contracts", function (argument){
+        if (this.userId) {
+          return Contracts.find();
+        } else {
+          return [];
+        }
+      });
+    }     
     if(Package['clinical:hl7-resource-device']){
       Meteor.publish("Devices", function (argument){
         if (this.userId) {
