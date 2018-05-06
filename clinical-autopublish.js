@@ -49,6 +49,9 @@ if (Meteor.isClient){
     if(Package['clinical:hl7-resource-immunization']){
       Meteor.subscribe("Immunizations");
     }
+    if(Package['clinical:hl7-resource-list']){
+      Meteor.subscribe("Lists");
+    }
     if(Package['clinical:hl7-resource-location']){
       Meteor.subscribe("Locations");
     }
@@ -305,6 +308,19 @@ if (Meteor.isServer){
       });
     }
 
+    if(Package['clinical:hl7-resource-list']){
+      Meteor.publish("Lists", function (argument){
+        if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
+          if (this.userId) {
+            return Lists.find();
+          } else {
+            return [];
+          }  
+        } else {
+          return Lists.find();
+        }
+      });
+    }
     if(Package['clinical:hl7-resource-location']){
       Meteor.publish("Locations", function (argument){
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
