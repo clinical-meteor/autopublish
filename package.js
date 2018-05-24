@@ -11,7 +11,7 @@ Package.onUse(function (api) {
 
   api.use('meteor-platform');
   api.use('mongo');
-  api.use('ddp-rate-limiter');
+  api.use('ddp-rate-limiter@1.0.7');
   api.use('underscore');
   api.use('aldeed:simple-schema@1.3.3');
   api.use('aldeed:collection2@2.5.0');
