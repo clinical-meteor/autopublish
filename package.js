@@ -1,6 +1,6 @@
 Package.describe({
   name: 'clinical:autopublish',
-  version: '1.0.22',
+  version: '1.0.23',
   summary: 'Autopublish FHIR resources to logged in users (i.e. clinicians)',
   git: 'https://github.com/clinical-meteor/autopublish',
   documentation: 'README.md'
@@ -16,6 +16,8 @@ Package.onUse(function (api) {
   api.use('aldeed:simple-schema@1.3.3');
   api.use('aldeed:collection2@2.5.0');
   api.use('ecmascript@0.9.0');
+
+  api.use('clinical:hl7-resource-subscription@3.3.4');
 
   api.addFiles('autopublish.js', ['client', 'server']);
   api.addFiles('security.js', ['client', 'server']);

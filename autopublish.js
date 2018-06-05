@@ -5,92 +5,94 @@ if (Meteor.isClient){
   Meteor.startup(function() {
 
     if(Package['clinical:hl7-resource-allergy-intolerance']){
-      Meteor.subscribe("AllergyIntolerances");
+      Meteor.subscribe("AllergyIntolerances", {});
     }
     if(Package['clinical:hl7-resource-audit-event']){
-      Meteor.subscribe("AuditEvents");
+      Meteor.subscribe("AuditEvents", {});
     }
     if(Package['clinical:hl7-resource-condition']){
-      Meteor.subscribe("Conditions");
+      Meteor.subscribe("Conditions", {});
     }
     if(Package['clinical:hl7-resource-careplan']){
-      Meteor.subscribe("CarePlans");
+      Meteor.subscribe("CarePlans", {});
     }
     if(Package['clinical:hl7-resource-consent']){
-      Meteor.subscribe("Consents");
+      Meteor.subscribe("Consents", {});
     }
     if(Package['clinical:hl7-resource-contract']){
-      Meteor.subscribe("Contracts");
+      Meteor.subscribe("Contracts", {});
     }     
     if(Package['clinical:hl7-resource-communication']){
-      Meteor.subscribe("Communications");
+      Meteor.subscribe("Communications", {});
     }            
     if(Package['clinical:hl7-resource-device']){
-      Meteor.subscribe("Devices");
+      Meteor.subscribe("Devices", {});
     }
     if(Package['clinical:hl7-resource-diagnostic-report']){
-      Meteor.subscribe("DiagnosticReports");
+      Meteor.subscribe("DiagnosticReports", {});
     }
     if (Package['clinical:hl7-resource-endpoint']){
-      Meteor.subscribe("Endpoints");
+      Meteor.subscribe("Endpoints", {});
     }
     if(Package['clinical:hl7-resource-encounter']){
-      Meteor.subscribe("Encounters");
+      Meteor.subscribe("Encounters", {});
     }
     if(Package['clinical:hl7-resource-family-member-history']){
-      Meteor.subscribe("FamilyMemberHistories");
+      Meteor.subscribe("FamilyMemberHistories", {});
     }
     if(Package['clinical:hl7-resource-healthcare-service']){
-      Meteor.subscribe("HealthcareServices");
+      Meteor.subscribe("HealthcareServices", {});
     }
     if(Package['clinical:hl7-resource-imaging-study']){
-      Meteor.subscribe("ImagingStudies");
+      Meteor.subscribe("ImagingStudies", {});
     }
     if(Package['clinical:hl7-resource-immunization']){
-      Meteor.subscribe("Immunizations");
+      Meteor.subscribe("Immunizations", {});
     }
     if(Package['clinical:hl7-resource-list']){
-      Meteor.subscribe("Lists");
+      Meteor.subscribe("Lists", {});
     }
     if(Package['clinical:hl7-resource-location']){
-      Meteor.subscribe("Locations");
+      Meteor.subscribe("Locations", {});
     }
     if(Package['clinical:hl7-resource-medication']){
-      Meteor.subscribe("Medications");
+      Meteor.subscribe("Medications", {});
     }
     if(Package['clinical:hl7-resource-medication-order']){
-      Meteor.subscribe("MedicationOrders");
+      Meteor.subscribe("MedicationOrders", {});
     }
     if(Package['clinical:hl7-resource-medication-statement']){
-      Meteor.subscribe("MedicationStatements");
+      Meteor.subscribe("MedicationStatements", {});
     }
-
     if(Package['clinical:hl7-resource-observation']){
-      Meteor.subscribe("Observations");
+      Meteor.subscribe("Observations", {});
     }
     if(Package['clinical:hl7-resource-organization']){
-      Meteor.subscribe("Organizations");
+      Meteor.subscribe("Organizations", {});
     }
     if(Package['clinical:hl7-resource-patient']){
-      Meteor.subscribe("Patients");
+      Meteor.subscribe("Patients", {});
     }
     if(Package['clinical:hl7-resource-practitioner']){
-      Meteor.subscribe("Practitioners");
+      Meteor.subscribe("Practitioners", {});
     }      
     if(Package['clinical:hl7-resource-questionnaire']){
-      Meteor.subscribe("Questionnaires");
+      Meteor.subscribe("Questionnaires", {});
     }
     if(Package['clinical:hl7-resource-questionnaire-response']){
-      Meteor.subscribe("QuestionnaireResponses");
+      Meteor.subscribe("QuestionnaireResponses", {});
     }
     if(Package['clinical:hl7-resource-risk-assessment']){
-      Meteor.subscribe("RiskAssessments");
+      Meteor.subscribe("RiskAssessments", {});
     }
     if(Package['clinical:hl7-resource-practitioner-role']){
-      Meteor.subscribe("PractitionerRoles");
+      Meteor.subscribe("PractitionerRoles", {});
     }
     if(Package['clinical:hl7-resource-procedure']){
-      Meteor.subscribe("Procedures");
+      Meteor.subscribe("Procedures", {});
+    }      
+    if(Package['clinical:hl7-resource-subscription']){
+      Meteor.subscribe("Subscriptions", {});
     }      
   });
 }
@@ -105,326 +107,400 @@ if (Meteor.isServer){
 
   Meteor.startup(function() {
     if(Package['clinical:hl7-resource-allergy-intolerance']){
-      Meteor.publish("AllergyIntolerances", function (argument){
+      Meteor.publish("AllergyIntolerances", function (query){
+        check(query, Match.Maybe(Object))
+        console.log('AllergyIntolerances.query', query)
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return AllergyIntolerances.find();
+            Meteor.call('createSubscription', "AllergyIntolerances", query, {})
+            return AllergyIntolerances.find(query);
           } else {
             return [];
           }  
         } else {
-          return AllergyIntolerances.find();
+          Meteor.call('createSubscription', "AllergyIntolerances", query, {})
+          return AllergyIntolerances.find(query);
         }
       });
     }   
     if(Package['clinical:hl7-resource-audit-event']){
-      Meteor.publish("AuditEvents", function (argument){
+      Meteor.publish("AuditEvents", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return AuditEvents.find();
+            Meteor.call('createSubscription', "AuditEvents", query, {})
+            return AuditEvents.find(query);
           } else {
             return [];
           }  
         } else {
-          return AuditEvents.find();
+          Meteor.call('createSubscription', "AuditEvents", query, {})
+          return AuditEvents.find(query);
         }
       });
     }
     if(Package['clinical:hl7-resource-careplan']){
-      Meteor.publish("CarePlans", function (argument){
+      Meteor.publish("CarePlans", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return CarePlans.find();
+            Meteor.call('createSubscription', "CarePlans", query, {})
+            return CarePlans.find(query);
           } else {
             return [];
           }  
         } else {
-          return CarePlans.find();
+          Meteor.call('createSubscription', "CarePlans", query, {})
+          return CarePlans.find(query);
         }
       });
     }    
     if(Package['clinical:hl7-resource-communication']){
-      Meteor.publish("Communications", function (argument){
+      Meteor.publish("Communications", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Communications.find();
+            Meteor.call('createSubscription', "Communications", query, {})
+            return Communications.find(query);
           } else {
             return [];
           }  
         } else {
-          return Communications.find();
+          Meteor.call('createSubscription', "Communications", query, {})
+          return Communications.find(query);
         }
       });
     }    
     if(Package['clinical:hl7-resource-condition']){
-      Meteor.publish("Conditions", function (argument){
+      Meteor.publish("Conditions", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Conditions.find();
+            Meteor.call('createSubscription', "Conditions", query, {})
+            return Conditions.find(query);
           } else {
             return [];
           }  
         } else {
-          return Conditions.find();
+          Meteor.call('createSubscription', "Conditions", query, {})
+          return Conditions.find(query);
         }
       });
     }         
     if(Package['clinical:hl7-resource-consent']){
-      Meteor.publish("Consents", function (argument){
+      Meteor.publish("Consents", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Consents.find();
+            Meteor.call('createSubscription', "Consents", query, {})
+            return Consents.find(query);
           } else {
             return [];
           }  
         } else {
-          return Consents.find();
+          Meteor.call('createSubscription', "Consents", query, {})
+          return Consents.find(query);
         }
       });
     }     
     if(Package['clinical:hl7-resource-contract']){
-      Meteor.publish("Contracts", function (argument){
+      Meteor.publish("Contracts", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Contracts.find();
+            Meteor.call('createSubscription', "Contracts", query, {})
+            return Contracts.find(query);
           } else {
             return [];
           }  
         } else {
-          return Contracts.find();
+          Meteor.call('createSubscription', "Contracts", query, {})
+          return Contracts.find(query);
         }
       });
     }     
     if(Package['clinical:hl7-resource-device']){
-      Meteor.publish("Devices", function (argument){
+      Meteor.publish("Devices", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Devices.find();
+            Meteor.call('createSubscription', "Devices", query, {})
+            return Devices.find(query);
           } else {
             return [];
           }  
         } else {
-          return Devices.find();
+          Meteor.call('createSubscription', "Devices", query, {})
+          return Devices.find(query);
         }
       });
     }     
 
     if(Package['clinical:hl7-resource-diagnostic-report']){
-      Meteor.publish("DiagnosticReports", function (argument){
+      Meteor.publish("DiagnosticReports", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return DiagnosticReports.find();
+            Meteor.call('createSubscription', "DiagnosticReports", query, {})
+            return DiagnosticReports.find(query);
           } else {
             return [];
           }  
         } else {
-          return DiagnosticReports.find();
+          Meteor.call('createSubscription', "DiagnosticReports", query, {})
+          return DiagnosticReports.find(query);
         }
       });
     }
 
     if(Package['clinical:hl7-resource-encounter']){
-      Meteor.publish("Encounters", function (argument){
+      Meteor.publish("Encounters", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Encounters.find();
+            Meteor.call('createSubscription', "Encounters", query, {})
+            return Encounters.find(query);
           } else {
             return [];
           }  
         } else {
-          return Encounters.find();
+          Meteor.call('createSubscription', "Encounters", query, {})
+          return Encounters.find(query);
         }
       });
     }   
     if(Package['clinical:hl7-resource-endpoint']){
-      Meteor.publish("Endpoints", function (argument){
-        return Endpoints.find();
+      Meteor.publish("Endpoints", function (query){
+        return Endpoints.find(query);
 
         // if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
         //   if (this.userId) {
-        //     return Endpoints.find();
+        //     return Endpoints.find(query);
         //   } else {
         //     return [];
         //   }  
         // } else {
-        //   return Endpoints.find();
+        //   return Endpoints.find(query);
         // }
       });
     }   
     if(Package['clinical:hl7-resource-family-member-history']){
-      Meteor.publish("FamilyMemberHistories", function (argument){
+      Meteor.publish("FamilyMemberHistories", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return FamilyMemberHistories.find();
+            Meteor.call('createSubscription', "FamilyMemberHistories", query, {})
+            return FamilyMemberHistories.find(query);
           } else {
             return [];
           }  
         } else {
-          return FamilyMemberHistories.find();
+          Meteor.call('createSubscription', "FamilyMemberHistories", query, {})
+          return FamilyMemberHistories.find(query);
         }
       });
     }
 
 
     if(Package['clinical:hl7-resource-healthcare-service']){
-      Meteor.publish("HealthcareServices", function (argument){
+      Meteor.publish("HealthcareServices", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return HealthcareServices.find();
+            Meteor.call('createSubscription', "HealthcareServices", query, {})
+            return HealthcareServices.find(query);
           } else {
             return [];
           }  
         } else {
-          return HealthcareServices.find();
+          Meteor.call('createSubscription', "HealthcareServices", query, {})
+          return HealthcareServices.find(query);
         }
       });
     }
 
 
     if(Package['clinical:hl7-resource-imaging-study']){
-      Meteor.publish("ImagingStudies", function (argument){
+      Meteor.publish("ImagingStudies", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return ImagingStudies.find();
+            Meteor.call('createSubscription', "ImagingStudies", query, {})
+            return ImagingStudies.find(query);
           } else {
             return [];
           }  
         } else {
-          return ImagingStudies.find();
+          Meteor.call('createSubscription', "ImagingStudies", query, {})
+          return ImagingStudies.find(query);
         }
       });
     }
     if(Package['clinical:hl7-resource-immunization']){
-      Meteor.publish("Immunizations", function (argument){
+      Meteor.publish("Immunizations", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Immunizations.find();
+            Meteor.call('createSubscription', "Immunizations", query, {})
+            return Immunizations.find(query);
           } else {
             return [];
           }  
         } else {
-          return Immunizations.find();
+          Meteor.call('createSubscription', "Immunizations", query, {})
+          return Immunizations.find(query);
         }
       });
     }
 
     if(Package['clinical:hl7-resource-list']){
-      Meteor.publish("Lists", function (argument){
+      Meteor.publish("Lists", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Lists.find();
+            Meteor.call('createSubscription', "Communications", query, {})
+            return Lists.find(query);
           } else {
             return [];
           }  
         } else {
-          return Lists.find();
+          Meteor.call('createSubscription', "Communications", query, {})
+          return Lists.find(query);
         }
       });
     }
     if(Package['clinical:hl7-resource-location']){
-      Meteor.publish("Locations", function (argument){
+      Meteor.publish("Locations", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Locations.find();
+            Meteor.call('createSubscription', "Locations", query, {})
+            return Locations.find(query);
           } else {
             return [];
           }  
         } else {
-          return Locations.find();
+          Meteor.call('createSubscription', "Locations", query, {})
+          return Locations.find(query);
         }
       });
     }
     if(Package['clinical:hl7-resource-medication']){
-      Meteor.publish("Medications", function (argument){
+      Meteor.publish("Medications", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Medications.find();
+            Meteor.call('createSubscription', "Medications", query, {})
+            return Medications.find(query);
           } else {
             return [];
           }  
         } else {
-          return Medications.find();
+          Meteor.call('createSubscription', "Medications", query, {})
+          return Medications.find(query);
         }
       });
     }    
     if(Package['clinical:hl7-resource-medication-statement']){
-      Meteor.publish("MedicationStatements", function (argument){
+      Meteor.publish("MedicationStatements", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return MedicationStatements.find();
+            Meteor.call('createSubscription', "MedicationStatements", query, {})
+            return MedicationStatements.find(query);
           } else {
             return [];
           }  
         } else {
-          return MedicationStatements.find();
+          Meteor.call('createSubscription', "MedicationStatements", query, {})
+          return MedicationStatements.find(query);
         }
       });
     }        
     if(Package['clinical:hl7-resource-medication-order']){
-      Meteor.publish("MedicationOrders", function (argument){
+      Meteor.publish("MedicationOrders", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return MedicationOrders.find();
+            Meteor.call('createSubscription', "MedicationOrders", query, {})
+            return MedicationOrders.find(query);
           } else {
             return [];
           }  
         } else {
-          return MedicationOrders.find();
+          Meteor.call('createSubscription', "MedicationOrders", query, {})
+          return MedicationOrders.find(query);
         }
       });
     }   
     if(Package['clinical:hl7-resource-organization']){
-      Meteor.publish("Organizations", function (argument){
+      Meteor.publish("Organizations", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Organizations.find();
+            Meteor.call('createSubscription', "Communications", query, {})
+            return Organizations.find(query);
           } else {
             return [];
           }  
         } else {
-          return Organizations.find();
+          Meteor.call('createSubscription', "Communications", query, {})
+          return Organizations.find(query);
         }
       });
     }
 
     if(Package['clinical:hl7-resource-observation']){
-      Meteor.publish('Observations', function (argument){
+      Meteor.publish('Observations', function (query){
+        check(query, Match.Maybe(Object))
+        if(typeof query === "undefined"){
+          query = {};
+        }
+
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Observations.find();
+            Meteor.call('createSubscription', "Observations", query, {})
+            return Observations.find(query);
           } else {
             return [];
           }  
         } else {
-          return Observations.find();
+          Meteor.call('createSubscription', "Observations", query, {})
+          return Observations.find(query);
         }
       });
     }
 
     if(Package['clinical:hl7-resource-practitioner']){
-      Meteor.publish("Practitioners", function (argument){
+      Meteor.publish("Practitioners", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Practitioners.find();
+            Meteor.call('createSubscription', "Practitioners", query, {})
+            return Practitioners.find(query);
           } else {
             return [];
           }  
         } else {
-          return Practitioners.find();
+          Meteor.call('createSubscription', "Practitioners", query, {})
+          return Practitioners.find(query);
         }
       });
     }    
 
     if(Package['clinical:hl7-resource-practitioner-role']){
-      Meteor.publish("PractitionerRoles", function (argument){
+      Meteor.publish("PractitionerRoles", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return PractitionerRoles.find();
+            Meteor.call('createSubscription', "PractitionerRoles", query, {})
+            return PractitionerRoles.find(query);
           } else {
             return [];
           }  
         } else {
-          return PractitionerRoles.find();
+          Meteor.call('createSubscription', "PractitionerRoles", query, {})
+          return PractitionerRoles.find(query);
         }
       });
     }
@@ -434,108 +510,141 @@ if (Meteor.isServer){
  
     if(Package['clinical:hl7-resource-patient']){
       Meteor.publish("Patients", function (query){
+        check(query, Match.Maybe(Object))
+        if(typeof query === "undefined"){
+          query = {};
+        }
+        let options = {
+          sort: {
+            meta: {
+              lastUpdated: -1
+            }
+          }
+        };
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (!query) {
             query = {};
           }
   
-          var options = {
-            sort: {}
-          };
-  
-          options.sort["meta.lastUpdated"] = -1;
-  
-          if (Meteor.settings && Meteor.settings.public && Meteor.settings.public.defaults && Meteor.settings.public.defaults.subscriptionLimit) {
-            options.limit = Meteor.settings.public.defaults.subscriptionLimit;
+          if (get(Meteor, 'settings.public.defaults.subscriptionLimit')) {
+            options.limit = get(Meteor, 'settings.public.defaults.subscriptionLimit');
           }
   
           process.env.DEBUG && console.log("Patients.publication", query, options);
   
           // user is logged in
           if (this.userId) {
+            Meteor.call('createSubscription', "Patients", query, options)
             return Patients.find(query, options);
           } else {
             return [];
           }
         } else {
-          return Patients.find();
+          Meteor.call('createSubscription', "Patients", query, options)
+          return Patients.find(query);
         }
       });
     }
 
     if(Package['clinical:hl7-resource-questionnaire-response']){
-      Meteor.publish("QuestionnaireResponses", function (argument){
+      Meteor.publish("QuestionnaireResponses", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return QuestionnaireResponses.find();
+            Meteor.call('createSubscription', "QuestionnaireResponses", query, {})
+            return QuestionnaireResponses.find(query);
           } else {
             return [];
           }  
         } else {
-          return QuestionnaireResponses.find();
+          Meteor.call('createSubscription', "QuestionnaireResponses", query, {})
+          return QuestionnaireResponses.find(query);
         }
       });
     }
     if(Package['clinical:hl7-resource-questionnaire']){
-      Meteor.publish("Questionnaires", function (argument){
+      Meteor.publish("Questionnaires", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Questionnaires.find();
+            Meteor.call('createSubscription', "Questionnaires", query, {})
+            return Questionnaires.find(query);
           } else {
             return [];
           }  
         } else {
-          return Questionnaires.find();
+          Meteor.call('createSubscription', "Questionnaires", query, {})
+          return Questionnaires.find(query);
         }
       });
     }
 
     if(Package['clinical:hl7-resource-risk-assessment']){
       Meteor.publish("RiskAssessments", function (query){
+        check(query, Match.Maybe(Object))
+        let options = {
+          sort: {
+            meta: {
+              lastUpdated: -1
+            }
+          }
+        };
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (!query) {
             query = {};
           }
-  
-          var options = {
-            sort: {}
-          };
-  
-          options.sort["meta.lastUpdated"] = -1;
-  
-          if (Meteor.settings && Meteor.settings.public && Meteor.settings.public.defaults && Meteor.settings.public.defaults.subscriptionLimit) {
-            options.limit = Meteor.settings.public.defaults.subscriptionLimit;
+    
+          if (get(Meteor, 'settings.public.defaults.subscriptionLimit')) {
+            options.limit = get(Meteor, 'settings.public.defaults.subscriptionLimit');
           }
   
           process.env.DEBUG && console.log("RiskAssessments.publication", query, options);
   
           // user is logged in
           if (this.userId) {
+            Meteor.call('createSubscription', "RiskAssessments", query, options)
             return RiskAssessments.find(query, options);
           } else {
             return [];
           }
         } else {
-          return RiskAssessments.find();
+          Meteor.call('createSubscription', "RiskAssessments", query, options)
+          return RiskAssessments.find(query);
         }        
       });
     }   
 
 
     if(Package['clinical:hl7-resource-procedure']){
-      Meteor.publish("Procedures", function (argument){
+      Meteor.publish("Procedures", function (query){
+        check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            return Procedures.find();
+            Meteor.call('createSubscription', "Procedures", query, {})
+            return Procedures.find(query);
           } else {
             return [];
           }  
         } else {
-          return Procedures.find();
+          Meteor.call('createSubscription', "Procedures", query, {})
+          return Procedures.find(query);
         }      
       });
     }      
   });
+
+  
+  if(Package['clinical:hl7-resource-subscription']){
+    Meteor.publish("Subscriptions", function (query){
+      check(query, Match.Maybe(Object))
+      if (this.userId) {
+        return Subscriptions.find(query);
+      } else {
+        return [];
+      }  
+    });
+  }      
+
 }
 
 
