@@ -115,6 +115,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "AllergyIntolerances", query, {})
             return AllergyIntolerances.find(query);
           } else {
+            Meteor.call('removeSubscription', "AllergyIntolerances")
             return [];
           }  
         } else {
@@ -131,6 +132,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "AuditEvents", query, {})
             return AuditEvents.find(query);
           } else {
+            Meteor.call('removeSubscription', "AuditEvents")
             return [];
           }  
         } else {
@@ -142,16 +144,26 @@ if (Meteor.isServer){
     if(Package['clinical:hl7-resource-careplan']){
       Meteor.publish("CarePlans", function (query){
         check(query, Match.Maybe(Object))
+        if(typeof query === "undefined"){
+          query = {};
+        }
+        let options = {
+          sort: {}
+        };
+        options.sort['meta.lastUpdated'] = -1
+
+
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            Meteor.call('createSubscription', "CarePlans", query, {})
-            return CarePlans.find(query);
+            Meteor.call('createSubscription', "CarePlans", query, options)
+            return CarePlans.find(query, options);
           } else {
+            Meteor.call('removeSubscription', "CarePlans")
             return [];
           }  
         } else {
-          Meteor.call('createSubscription', "CarePlans", query, {})
-          return CarePlans.find(query);
+          Meteor.call('createSubscription', "CarePlans", query, options)
+          return CarePlans.find(query, options);
         }
       });
     }    
@@ -163,6 +175,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Communications", query, {})
             return Communications.find(query);
           } else {
+            Meteor.call('removeSubscription', "Communications")
             return [];
           }  
         } else {
@@ -179,6 +192,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Conditions", query, {})
             return Conditions.find(query);
           } else {
+            Meteor.call('removeSubscription', "Conditions")
             return [];
           }  
         } else {
@@ -195,6 +209,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Consents", query, {})
             return Consents.find(query);
           } else {
+            Meteor.call('removeSubscription', "Consents")
             return [];
           }  
         } else {
@@ -211,6 +226,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Contracts", query, {})
             return Contracts.find(query);
           } else {
+            Meteor.call('removeSubscription', "Contracts")
             return [];
           }  
         } else {
@@ -227,6 +243,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Devices", query, {})
             return Devices.find(query);
           } else {
+            Meteor.call('removeSubscription', "Devices")
             return [];
           }  
         } else {
@@ -244,6 +261,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "DiagnosticReports", query, {})
             return DiagnosticReports.find(query);
           } else {
+            Meteor.call('removeSubscription', "DiagnosticReports")
             return [];
           }  
         } else {
@@ -261,6 +279,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Encounters", query, {})
             return Encounters.find(query);
           } else {
+            Meteor.call('removeSubscription', "Encounters")
             return [];
           }  
         } else {
@@ -271,17 +290,19 @@ if (Meteor.isServer){
     }   
     if(Package['clinical:hl7-resource-endpoint']){
       Meteor.publish("Endpoints", function (query){
-        return Endpoints.find(query);
-
-        // if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
-        //   if (this.userId) {
-        //     return Endpoints.find(query);
-        //   } else {
-        //     return [];
-        //   }  
-        // } else {
-        //   return Endpoints.find(query);
-        // }
+        check(query, Match.Maybe(Object))
+        if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
+          if (this.userId) {
+            Meteor.call('createSubscription', "Endpoints", query, {})
+            return Endpoints.find(query);
+          } else {
+            Meteor.call('removeSubscription', "Endpoints")
+            return [];
+          }  
+        } else {
+          Meteor.call('createSubscription', "Endpoints", query, {})
+          return Endpoints.find(query);
+        }
       });
     }   
     if(Package['clinical:hl7-resource-family-member-history']){
@@ -292,6 +313,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "FamilyMemberHistories", query, {})
             return FamilyMemberHistories.find(query);
           } else {
+            Meteor.call('removeSubscription', "FamilyMemberHistories")
             return [];
           }  
         } else {
@@ -310,6 +332,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "HealthcareServices", query, {})
             return HealthcareServices.find(query);
           } else {
+            Meteor.call('removeSubscription', "HealthcareServices")
             return [];
           }  
         } else {
@@ -328,6 +351,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "ImagingStudies", query, {})
             return ImagingStudies.find(query);
           } else {
+            Meteor.call('removeSubscription', "ImagingStudies")
             return [];
           }  
         } else {
@@ -344,6 +368,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Immunizations", query, {})
             return Immunizations.find(query);
           } else {
+            Meteor.call('removeSubscription', "Immunizations")
             return [];
           }  
         } else {
@@ -361,6 +386,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Communications", query, {})
             return Lists.find(query);
           } else {
+            Meteor.call('removeSubscription', "Lists")
             return [];
           }  
         } else {
@@ -377,6 +403,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Locations", query, {})
             return Locations.find(query);
           } else {
+            Meteor.call('removeSubscription', "Locations")
             return [];
           }  
         } else {
@@ -388,11 +415,22 @@ if (Meteor.isServer){
     if(Package['clinical:hl7-resource-medication']){
       Meteor.publish("Medications", function (query){
         check(query, Match.Maybe(Object))
+        if(typeof query === "undefined"){
+          query = {};
+        }
+        let options = {
+          sort: {}
+        };
+        options.sort['meta.lastUpdated'] = -1
+
+
+
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            Meteor.call('createSubscription', "Medications", query, {})
-            return Medications.find(query);
+            Meteor.call('createSubscription', "Medications", query, options)
+            return Medications.find(query, options);
           } else {
+            Meteor.call('removeSubscription', "Medications")
             return [];
           }  
         } else {
@@ -409,6 +447,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "MedicationStatements", query, {})
             return MedicationStatements.find(query);
           } else {
+            Meteor.call('removeSubscription', "MedicationStatements")
             return [];
           }  
         } else {
@@ -425,6 +464,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "MedicationOrders", query, {})
             return MedicationOrders.find(query);
           } else {
+            Meteor.call('removeSubscription', "MedicationOrders")
             return [];
           }  
         } else {
@@ -438,13 +478,14 @@ if (Meteor.isServer){
         check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
-            Meteor.call('createSubscription', "Communications", query, {})
+            Meteor.call('createSubscription', "Organizations", query, {})
             return Organizations.find(query);
           } else {
+            Meteor.call('removeSubscription', "Organizations")
             return [];
           }  
         } else {
-          Meteor.call('createSubscription', "Communications", query, {})
+          Meteor.call('createSubscription', "Organizations", query, {})
           return Organizations.find(query);
         }
       });
@@ -462,6 +503,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Observations", query, {})
             return Observations.find(query);
           } else {
+            Meteor.call('removeSubscription', "Observations")
             return [];
           }  
         } else {
@@ -479,6 +521,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Practitioners", query, {})
             return Practitioners.find(query);
           } else {
+            Meteor.call('removeSubscription', "Practitioners")
             return [];
           }  
         } else {
@@ -496,6 +539,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "PractitionerRoles", query, {})
             return PractitionerRoles.find(query);
           } else {
+            Meteor.call('removeSubscription', "PractitionerRoles")
             return [];
           }  
         } else {
@@ -515,12 +559,11 @@ if (Meteor.isServer){
           query = {};
         }
         let options = {
-          sort: {
-            meta: {
-              lastUpdated: -1
-            }
-          }
+          sort: {}
         };
+        options.sort['meta.lastUpdated'] = -1
+
+
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (!query) {
             query = {};
@@ -537,6 +580,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Patients", query, options)
             return Patients.find(query, options);
           } else {
+            Meteor.call('removeSubscription', "Patients")
             return [];
           }
         } else {
@@ -570,6 +614,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Questionnaires", query, {})
             return Questionnaires.find(query);
           } else {
+            Meteor.call('removeSubscription', "Questionnaires")
             return [];
           }  
         } else {
@@ -583,12 +628,12 @@ if (Meteor.isServer){
       Meteor.publish("RiskAssessments", function (query){
         check(query, Match.Maybe(Object))
         let options = {
-          sort: {
-            meta: {
-              lastUpdated: -1
-            }
-          }
+          sort: {}
         };
+        options.sort['meta.lastUpdated'] = -1
+
+
+
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (!query) {
             query = {};
@@ -605,6 +650,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "RiskAssessments", query, options)
             return RiskAssessments.find(query, options);
           } else {
+            Meteor.call('removeSubscription', "RiskAssessments")
             return [];
           }
         } else {
@@ -623,6 +669,7 @@ if (Meteor.isServer){
             Meteor.call('createSubscription', "Procedures", query, {})
             return Procedures.find(query);
           } else {
+            Meteor.call('removeSubscription', "Procedures")
             return [];
           }  
         } else {
