@@ -109,7 +109,6 @@ if (Meteor.isServer){
     if(Package['clinical:hl7-resource-allergy-intolerance']){
       Meteor.publish("AllergyIntolerances", function (query){
         check(query, Match.Maybe(Object))
-        console.log('AllergyIntolerances.query', query)
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
             Meteor.call('createSubscription', "AllergyIntolerances", query, {})
@@ -572,9 +571,7 @@ if (Meteor.isServer){
           if (get(Meteor, 'settings.public.defaults.subscriptionLimit')) {
             options.limit = get(Meteor, 'settings.public.defaults.subscriptionLimit');
           }
-  
-          process.env.DEBUG && console.log("Patients.publication", query, options);
-  
+
           // user is logged in
           if (this.userId) {
             Meteor.call('createSubscription', "Patients", query, options)
@@ -632,8 +629,6 @@ if (Meteor.isServer){
         };
         options.sort['meta.lastUpdated'] = -1
 
-
-
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (!query) {
             query = {};
@@ -642,9 +637,7 @@ if (Meteor.isServer){
           if (get(Meteor, 'settings.public.defaults.subscriptionLimit')) {
             options.limit = get(Meteor, 'settings.public.defaults.subscriptionLimit');
           }
-  
-          process.env.DEBUG && console.log("RiskAssessments.publication", query, options);
-  
+
           // user is logged in
           if (this.userId) {
             Meteor.call('createSubscription', "RiskAssessments", query, options)
