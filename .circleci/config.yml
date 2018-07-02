@@ -107,7 +107,7 @@ jobs:
     - run: cd ../baseline && ls -la
 
     - run: cd ../baseline && meteor npm install
-    - run: cd ../baseline && meteor npm install react
+    - run: cd ../baseline && meteor npm install react lodash
     - run: cd ../baseline && mkdir packages && cd packages && mkdir autopublish
     - run: cp -R ./* ../baseline/packages/autopublish
     - run: cd ../baseline/packages/autopublish && pwd
