@@ -10,7 +10,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/clinical-meteor/accounts-housemd
+    working_directory: ~/clinical-meteor/autopublish
     parallelism: 1
     shell: /bin/bash --login
 
@@ -108,14 +108,14 @@ jobs:
 
     - run: cd ../baseline && meteor npm install
     - run: cd ../baseline && meteor npm install react
-    - run: cd ../baseline && mkdir packages && cd packages && mkdir accounts-housemd
-    - run: cp -R ./* ../baseline/packages/accounts-housemd
-    - run: cd ../baseline/packages/accounts-housemd && pwd
+    - run: cd ../baseline && mkdir packages && cd packages && mkdir autopublish
+    - run: cp -R ./* ../baseline/packages/autopublish
+    - run: cd ../baseline/packages/autopublish && pwd
     - run: cd ../baseline/packages && ls -la
 
     - run: cd ../baseline && npm i --save-dev selenium-webdriver@3.0.0-beta-2 chromedriver
     - run: cd ../baseline && meteor add dispatch:mocha practicalmeteor:chai
-    - run: cd ../baseline && meteor add clinical:accounts-housemd 
+    - run: cd ../baseline && meteor add clinical:autopublish 
     - run: cd ../baseline && mkdir imports 
     - run: cp tests/Autopublish.tests.js ../baseline/imports/
 
