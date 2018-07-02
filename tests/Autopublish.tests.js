@@ -3,14 +3,14 @@ import { assert } from 'meteor/practicalmeteor:chai';
 import { chai } from 'meteor/practicalmeteor:chai';
 import { expect } from 'meteor/practicalmeteor:chai';
 
-describe('clinical:accounts-housemd', function () {
+describe('clinical:autopublish', function () {
   beforeEach(function () {
     //console.log('beforeEach');
   });
   afterEach(function () {
     //console.log('afterEach');
   });
-  it('exists globally', function () {
-    expect(Characters).to.exist;
+  it('PublishingHouse object exists globally', function () {
+    expect(PublishingHouse).to.exist;
   });
 });
