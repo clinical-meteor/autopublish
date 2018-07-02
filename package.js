@@ -1,6 +1,6 @@
 Package.describe({
   name: 'clinical:autopublish',
-  version: '1.0.27',
+  version: '1.0.28',
   summary: 'Autopublish FHIR resources to logged in users (i.e. clinicians)',
   git: 'https://github.com/clinical-meteor/autopublish',
   documentation: 'README.md'
@@ -21,4 +21,8 @@ Package.onUse(function (api) {
 
   api.addFiles('autopublish.js', ['client', 'server']);
   api.addFiles('security.js', ['client', 'server']);
+
+  api.addFiles('lib/PublishingHouse.js');
+
+  api.export('PublishingHouse')
 });
