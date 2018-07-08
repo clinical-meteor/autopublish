@@ -602,6 +602,9 @@ if (Meteor.isServer){
 
     if(Package['clinical:hl7-resource-person']){
       Meteor.publish("Persons", function (query){
+        if(!query){
+          query = {};
+        }
         check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
@@ -621,6 +624,9 @@ if (Meteor.isServer){
 
     if(Package['clinical:hl7-resource-questionnaire-response']){
       Meteor.publish("QuestionnaireResponses", function (query){
+        if(!query){
+          query = {};
+        }
         check(query, Match.Maybe(Object))
         if(get(Meteor, 'settings.public.defaults.requireAuthorization')){
           if (this.userId) {
