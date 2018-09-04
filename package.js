@@ -1,6 +1,6 @@
 Package.describe({
   name: 'clinical:autopublish',
-  version: '1.1.0',
+  version: '1.2.0',
   summary: 'Autopublish FHIR resources to logged in users (i.e. clinicians)',
   git: 'https://github.com/clinical-meteor/autopublish',
   documentation: 'README.md'
