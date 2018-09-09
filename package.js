@@ -1,6 +1,6 @@
 Package.describe({
   name: 'clinical:autopublish',
-  version: '1.2.0',
+  version: '1.2.1',
   summary: 'Autopublish FHIR resources to logged in users (i.e. clinicians)',
   git: 'https://github.com/clinical-meteor/autopublish',
   documentation: 'README.md'
@@ -13,7 +13,6 @@ Package.onUse(function (api) {
   api.use('mongo');
   api.use('ddp-rate-limiter@1.0.7');
   api.use('underscore');
-  api.use('aldeed:simple-schema@1.3.3');
   api.use('aldeed:collection2@2.5.0');
   api.use('ecmascript@0.9.0');
 
@@ -26,3 +25,7 @@ Package.onUse(function (api) {
 
   api.export('PublishingHouse')
 });
+
+Npm.depends({
+  "simpl-schema": "1.5.3"
+})
